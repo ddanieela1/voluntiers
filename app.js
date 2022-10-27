@@ -1,14 +1,24 @@
 require('dotenv').config();
 const express = require('express');
-const app = express();
+
+const cors = require('cors');
 const mongoose = require('mongoose');
-// import models
-// const SuperHero = require('./models/superhero');
+const session = require('express-session');
+const flash = require('connect-flash');
+require('./config/passport')(passport);
 
+//App Set Up
+const app = express();
+const PORT = process.env.PORT || 8000;
 
-// connect to datbase
+//Middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json()); // JSON parsing
+app.use(cors()); // allow all CORS requests
+app.use(passport.initialize());
+//Database Set Up
 const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
-mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true });
+mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 db.once('open', () => {
@@ -32,7 +42,8 @@ db.on('error', (error) => {
 //     console.log('ERROR', error);
 // })
 
-app.use(express.urlencoded({ extended: false }));
+//API Routes
+
 
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to Voluntiers' });
@@ -48,11 +59,16 @@ app.get('/', (req, res) => {
 // app.use('/vehicles', require('./controllers/vehicles'));
 
 
-app.get('*', (req, res) => {
-    res.json({ message: 'Whatever you were looking for... does not exists.'})
-})
-
-
-app.listen(8000, () => {
-    console.log('Running port 8000')
-});
+// API Routes
+app.get('/', (req, res) => {
+    res.json({ name: 'MERN Auth API', greeting: 'Welcome to the our API', author: 'YOU', message: "Smile, you are being watched by the Backend Engineering Team" });
+  });
+  
+  app.use('/examples', require('./controllers/example'));
+  app.use('/users', require('./controllers/user'));
+  
+  // Server
+  const server = app.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`));
+  
+  module.exports = server;
+  
