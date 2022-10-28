@@ -7,7 +7,8 @@ const organizationSchema = new Schema({
         required: true,
     },
     contactPerson: {
-        type: Date,
+        type: String,
+        required: true,
     },
     contactEmail: {
         type: String,

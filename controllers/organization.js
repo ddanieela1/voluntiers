@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/organizations', (req, res) => {
-    Organization.find({})
+    Event.find({})
     .then(organizations => {
         console.log('All organizations', organizations);
         res.json({ organizations: organizations });
