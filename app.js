@@ -29,43 +29,13 @@ db.on('error', (error) => {
     console.log(`Database Error: ${error}`);
 });
 
-
-// SuperHero.create({
-//     realName: 'Clark Kent',
-//     alterEgo: 'Superman',
-//     company: 'Marvel'
-// })
-// .then(superhero => {
-//     console.log('NEW HERO', superhero);
-// })
-// .catch(error => {
-//     console.log('ERROR', error);
-// })
-
-//API Routes
-
-
+//API ROUTES
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to Voluntiers' });
 });
 
-// ================ SUPERHEROS ROUTES ========================
-// app.use('/superheros', require('./controllers/superheros'));
 
-// ================ CREDIT CARDS ROUTES ========================
-// app.use('/credits', require('./controllers/credits'));
-
-// ================ VEHICLES ROUTES ========================
-// app.use('/vehicles', require('./controllers/vehicles'));
-
-
-// API Routes
-app.get('/', (req, res) => {
-    res.json({ name: 'MERN Auth API', greeting: 'Welcome to the our API', author: 'YOU', message: "Smile, you are being watched by the Backend Engineering Team" });
-  });
-  
-  app.use('/examples', require('./controllers/example'));
-  app.use('/users', require('./controllers/user'));
+  app.use('/events', require('./controllers/event'));
   
   // Server
   const server = app.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`));
