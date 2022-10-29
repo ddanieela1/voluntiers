@@ -10,11 +10,8 @@ const { JWT_SECRET } = process.env;
 // DB Models
 const Event = require('../models/event');
 
-router.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the Events page' });
-});
 
-router.get('/events', (req, res) => {
+router.get('/', (req, res) => {
     Event.find({})
     .then(events => {
         console.log('All events', events);
@@ -26,7 +23,7 @@ router.get('/events', (req, res) => {
     });
 });
 
-router.get('/events/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     console.log('find events by', req.params.id)
     Event.findOne({
         id: req.params.id
@@ -41,7 +38,7 @@ router.get('/events/:id', (req, res) => {
     });
 });
 
-router.post('/events', (req, res) => {
+router.post('/', (req, res) => {
     Event.create({
         name: req.body.name,
         date: req.body.date,
@@ -61,9 +58,9 @@ router.post('/events', (req, res) => {
     });
 });
 
-router.put('/events/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   
-    Event.findOne({ id: req.params.id })
+    Event.findById(req.params.id )
     .then(foundEvent=> {
         console.log('Event found', foundEvent);
         Event.findOneAndUpdate({ id: req.params.id}, { 
@@ -92,7 +89,7 @@ router.put('/events/:id', (req, res) => {
     })
 });
 
-router.delete('/events/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     Event.findOneAndRemove({ id: req.params.id})
     .then(response => {
         console.log('This was deleted', response);
