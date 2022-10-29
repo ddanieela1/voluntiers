@@ -32,6 +32,9 @@ db.on('error', (error) => {
 // API Routes
 
 app.get('/', (req, res) => {
+  res.json({ name: 'MERN Auth API', greeting: 'Welcome to the our API', author: 'YOU', message: "Smile, you are being watched by the Backend Engineering Team" });
+});
+    
   app.use('/eventsignup', require('./controllers/event-signup'));
   app.use('/events', require('./controllers/event'));
   app.use('/organizations', require('./controllers/organization'));
