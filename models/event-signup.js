@@ -9,15 +9,15 @@ const eventSignupSchema = new Schema({
     },
     updatedAt: Date,
     eventId: {
-        type: {type: mongoose.Schema.Types.ObjectId, ref: 'Event'},
-        required: [true, "Please Select Event"]
+        type: mongoose.Schema.Types.ObjectId, ref: 'Event',
+        required: true
     },
     userId: {
-        type: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+        type: mongoose.Schema.Types.ObjectId, ref: 'User',
         required: true
     },
     hoursId: {
-        type: {type: mongoose.Schema.Types.ObjectId, ref: 'Hours'},
+        type: mongoose.Schema.Types.ObjectId, ref: 'Hours',
         required: true
     },
 });

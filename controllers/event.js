@@ -103,3 +103,5 @@ router.delete('/events/:id', (req, res) => {
         res.json({ message: "Error ocurred, please try again" });
     })
 });
+
+module.exports = router;

@@ -99,3 +99,5 @@ router.delete('/organization/:id', (req, res) => {
         res.json({ message: "Error ocurred, please try again" });
     })
 });
+
+module.exports = router;

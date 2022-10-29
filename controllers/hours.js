@@ -93,3 +93,5 @@ router.delete('/hours/:id', (req, res) => {
         res.json({ message: "Error ocurred, please try again" });
     })
 });
+
+module.exports = router;
