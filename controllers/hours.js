@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     res.json({ message: 'Welcome to the home page' });
 });
 
-router.get('/hours', (req, res) => {
+router.get('/', (req, res) => {
     Hour.find({})
     .then(hours => {
         console.log('All hours', hours);
@@ -26,7 +26,7 @@ router.get('/hours', (req, res) => {
     });
 });
 
-router.get('/hours/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     console.log('find hours by', req.params.id)
     Hour.findOne({
         id: req.params.id
@@ -41,7 +41,7 @@ router.get('/hours/:id', (req, res) => {
     });
 });
 
-router.post('/hours', (req, res) => {
+router.post('/', (req, res) => {
     Hour.create({
         signIn: req.body.signIn,
         signOut: req.body.signOut,
@@ -56,7 +56,7 @@ router.post('/hours', (req, res) => {
     });
 });
 
-router.put('/hours/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   
     Hour.findOne({ id: req.params.id })
     .then(foundHours=> {
@@ -82,7 +82,7 @@ router.put('/hours/:id', (req, res) => {
     })
 });
 
-router.delete('/hours/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     Hour.findOneAndRemove({ id: req.params.id})
     .then(response => {
         console.log('This was deleted', response);

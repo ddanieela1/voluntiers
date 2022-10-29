@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     res.json({ message: 'Welcome to the Organizations page' });
 });
 
-router.get('/organizations', (req, res) => {
+router.get('/', (req, res) => {
     Event.find({})
     .then(organizations => {
         console.log('All organizations', organizations);
@@ -26,7 +26,7 @@ router.get('/organizations', (req, res) => {
     });
 });
 
-router.get('/organizations/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     console.log('find organizations by', req.params.id)
     Organization.findOne({
         id: req.params.id
@@ -41,7 +41,7 @@ router.get('/organizations/:id', (req, res) => {
     });
 });
 
-router.post('/organizations', (req, res) => {
+router.post('/', (req, res) => {
     Organization.create({
         name: req.body.name,
         contactPerson: req.body.contactPerson,
@@ -59,7 +59,7 @@ router.post('/organizations', (req, res) => {
     });
 });
 
-router.put('/organizations/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   
     Organization.findOne({ id: req.params.id })
     .then(foundOrganizarion=> {
@@ -88,7 +88,7 @@ router.put('/organizations/:id', (req, res) => {
     })
 });
 
-router.delete('/organization/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     Organization.findOneAndRemove({ id: req.params.id})
     .then(response => {
         console.log('This was deleted', response);
