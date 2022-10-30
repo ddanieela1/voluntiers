@@ -32,9 +32,10 @@ const eventSchema = new Schema({
     organizationId: {
         type: String,
         required: true
-    }
-    
-})
+    },
+},
+    { timestamps: true}
+);
 
 const Event = mongoose.model('Event', eventSchema);
 

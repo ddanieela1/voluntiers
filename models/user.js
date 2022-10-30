@@ -23,11 +23,9 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
-    date: {
-        type: Date,
-        default: Date.now()
-    }
-})
+    },
+    { timestamps: true }
+);
 
 const User = mongoose.model('User', userSchema);
 
