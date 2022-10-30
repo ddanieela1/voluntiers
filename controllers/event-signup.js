@@ -1,104 +1,93 @@
-const express = require('express');
+// Imports
+require("dotenv").config();
+const express = require("express");
 const router = express.Router();
-const EventSignup = require('../models/event-signup');
-const passport = require('passport');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
+const { JWT_SECRET } = process.env;
 
-// put this inside route to authenticate -> passport.authenticate('jwt', { session: false })
+// DB Models
+const EventSignup = require("../models/event-signup");
 
-router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-    // Purpose: Fetch all examples from DB and return
-    console.log('=====> Inside GET /event-signup');
 
-    EventSignup.findById(req.params.id)
-    .then(foundEventSignups => {
-        res.json({ eventSignups: foundEventSignups });
+router.get("/", (req, res) => {
+    EventSignup.find({})
+    .then((signups) => {
+      console.log("All event signups", signups);
+      res.json({ signups: signups });
     })
-    .catch(err => {
-        console.log('Error in example#index:', err);
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error occured, please try again" });
+    });
+});
+
+router.get("/:id", (req, res) => {
+  console.log("find event signups by", req.params.id);
+  EventSignup.findOne({
+    id: req.params.id,
+  })
+    .then((signups) => {
+      console.log("Here is the event signup", signups.id);
+      res.json({ signups: signups });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
+    });
+});
+
+router.post("/", (req, res) => {
+    EventSignup.findOne({ userId: req.body.userId })
+    .then(eventsignup => {
+        if (eventsignup) {
+            return res.status(400).json({ message: 'You already signed up!' });
+        } else {
+            const newSignup = new EventSignup({
+                eventId: req.body.eventId,
+                userId: req.body.userId
+            })
+        }
+    })
+    .catch(err => { 
+        console.log('Error finding event signup', err);
         res.json({ message: 'Error occured... Please try again.'})
-    });
-});
-
-router.get('/query', (req, res) => {
-    // Purpose: Fetch one example by searching in DB and return
-    console.log('=====> Inside GET /examples/query');
-    console.log('=====> req.query', req.query);
-
-    EventSignup.find(req.query)
-    .then(eventSignup => {
-        res.json({ eventSignup: eventSignup });
-    })
-    .catch(err => {
-        console.log('Error in eventSignup#query:', err);
-        res.json({ message: 'Error occured... Please try again.'})
-    });
-});
-
-router.get('/:id', (req, res) => {
-    // Purpose: Fetch one example from DB and return
-    console.log('=====> Inside GET /examples/:id');
-
-    EventSignup.findById(req.params.id)
-    .then(e => {
-        res.json({ eventSignup: eventSignup });
-    })
-    .catch(err => {
-        console.log('Error in eventSignup#show:', err);
-        res.json({ message: 'Error occured... Please try again.'})
-    });
-});
-
-
-router.post('/', (req, res) => {
-    // Purpose: Create one example by adding body to DB, and return
-    console.log('=====> Inside POST /examples');
-    console.log('=====> req.body', req.body); // object used for creating new example
-
-    EventSignup.create(req.body)
-    .then(newSignup => {
-        console.log('New signup created', newSignup);
-        res.redirect(`/eventSignup/${newSignup.id}`);
-    })
-    .catch(err => {
-        console.log('Error in signup#create:', err);
-        res.json({ message: 'Error occured... Please try again.'});
     })
 });
+//     EventSignup.create({
+//     eventId: req.body.eventId,
+//     userId: req.body.userId
+//   })
+//     .then((signups) => {
+//       console.log("New event signup =>>", signups);
+//       res.json({ signups: signups });
 
+//     })
+//     .catch((error) => {
+//       console.log("error", error);
+//       res.json({ message: "Error ocurred, please try again" });
+//     });
+// });
 
-
-router.put('/:id', (req, res) => {
-    // Purpose: Update one example in the DB, and return
-    console.log('=====> Inside PUT /event-signup/:id');
-    console.log('=====> req.params', req.params); // object used for finding event signup by id
-    console.log('=====> req.body', req.body); // object used for updating event-signup
-
-    Example.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then(updatedEventSignup => {
-        console.log('EventSignup updated', updatedEventSignup);
-        //update updatedAt for current eventSignup
-        res.redirect(`/event-signup/${req.params.id}`);
-    })
-    .catch(err => {
-        console.log('Error in example#update:', err);
-        res.json({ message: 'Error occured... Please try again.'});
-    });
+router.put("/:id", async(req, res) => {
+    try {
+        const data = await EventSignup.findById(req.params.id);
+        res.json({ data: data });
+    } catch (error) {
+    console.log(error);
+    }
 });
 
-router.delete('/:id', (req, res) => {
-    // Purpose: Update one example in the DB, and return
-    console.log('=====> Inside DELETE /examples/:id');
-    console.log('=====> req.params');
-    console.log(req.params); // object used for finding example by id
-    
-    Example.findByIdAndRemove(req.params.id)
-    .then(response => {
-        console.log(`Event Signup ${req.params.id} was deleted`, response);
-        res.redirect(`/event-signup`);
+router.delete("/:id", (req, res) => {
+    EventSignup.findOneAndRemove({ id: req.params.id })
+    .then((response) => {
+      console.log("The signup was deleted", response);
+      res.json({ message: `${req.params.id} was deleted` });
     })
-    .catch(err => {
-        console.log('Error in example#delete:', err);
-        res.json({ message: 'Error occured... Please try again.'});
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
     });
 });
 

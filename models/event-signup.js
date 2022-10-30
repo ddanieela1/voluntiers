@@ -17,8 +17,7 @@ const eventSignupSchema = new Schema({
         required: true
     },
     hoursId: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'Hours',
-        required: true
+        type: mongoose.Schema.Types.ObjectId, ref: 'Hours'
     },
 });
 
