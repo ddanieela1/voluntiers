@@ -21,7 +21,9 @@ const organizationSchema = new Schema({
     createdAt: {
         type: String,
         required: true
-    } 
+    }
+    
+
 })
 
 const Organization = mongoose.model('Organization', organizationSchema);

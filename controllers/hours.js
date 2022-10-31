@@ -11,10 +11,6 @@ const { JWT_SECRET } = process.env;
 const Hour = require('../models/hours');
 
 router.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the home page' });
-});
-
-router.get('/', (req, res) => {
     Hour.find({})
     .then(hours => {
         console.log('All hours', hours);
@@ -56,31 +52,15 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
-  
-    Hour.findOne({ id: req.params.id })
-    .then(foundHours=> {
-        console.log('Sign-in found', foundHours);
-        Hour.findOneAndUpdate({ id: req.params.id}, { 
-            signIn: req.body.signIn,
-            signOut: req.body.signOut,
-        }, { 
-            upsert: true 
-        })
-        .then(hours => {
-            console.log('Sign-in was updated', hours);
-            res.json({ hours: hours })
-        })
-        .catch(error => {
-            console.log('error', error) 
-            res.json({ message: "Error ocurred, please try again" })
-        })
-    })
-    .catch(error => {
-        console.log('error', error) 
-        res.json({ message: "Error ocurred, please try again" })
-    })
+router.put("/:id", async(req, res) => {
+    try {
+        const data = await Hour.findById(req.params.id);
+        res.json({ data: data });
+    } catch (error) {
+    console.log(error);
+}
 });
+
 
 router.delete('/:id', (req, res) => {
     Hour.findOneAndRemove({ id: req.params.id})

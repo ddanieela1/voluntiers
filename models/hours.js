@@ -9,6 +9,10 @@ const hourSchema = new Schema({
     signOut: {
         type: Date,
         required: true,
+    },
+    userId: {
+        type: String,
+        required: true,
     }
     
 })

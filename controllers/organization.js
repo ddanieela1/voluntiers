@@ -10,12 +10,9 @@ const { JWT_SECRET } = process.env;
 // DB Models
 const Organization = require('../models/organization');
 
-router.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the Organizations page' });
-});
 
 router.get('/', (req, res) => {
-    Event.find({})
+    Organization.find({})
     .then(organizations => {
         console.log('All organizations', organizations);
         res.json({ organizations: organizations });
@@ -59,33 +56,13 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
-  
-    Organization.findOne({ id: req.params.id })
-    .then(foundOrganizarion=> {
-        console.log('Organization found', foundOrganizarion);
-        Organization.findOneAndUpdate({ id: req.params.id}, { 
-            name: req.body.name,
-            contactPerson: req.body.contactPerson,
-            contactEmail: req.body.contactEmail,
-            contactPhone: req.body.contactPhone,
-            createdAt: req.body.createdAt
-        }, { 
-            upsert: true 
-        })
-        .then(organizations => {
-            console.log('Organization was updated', organizations);
-            res.json({ organizations: organizations })
-        })
-        .catch(error => {
-            console.log('error', error) 
-            res.json({ message: "Error ocurred, please try again" })
-        })
-    })
-    .catch(error => {
-        console.log('error', error) 
-        res.json({ message: "Error ocurred, please try again" })
-    })
+router.put("/:id", async(req, res) => {
+    try {
+        const data = await Organization.findById(req.params.id);
+        res.json({ data: data });
+    } catch (error) {
+    console.log(error);
+}
 });
 
 router.delete('/:id', (req, res) => {

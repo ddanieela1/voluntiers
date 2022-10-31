@@ -8,13 +8,13 @@ const passport = require("passport");
 const { JWT_SECRET } = process.env;
 
 // DB Models
-const Event = require("../models/event");
+const Opportunity = require("../models/opportunity");
 
 router.get("/", (req, res) => {
-  Event.find({})
-    .then((events) => {
-      console.log("All events", events);
-      res.json({ events: events });
+  Opportunity.find({})
+    .then((opportunities) => {
+      console.log("All opportunities", opportunities);
+      res.json({ opportunities: opportunities });
     })
     .catch((error) => {
       console.log("error", error);
@@ -23,13 +23,13 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  console.log("find events by", req.params.id);
-  Event.findOne({
+  console.log("find opportunities by", req.params.id);
+  Opportunity.findOne({
     id: req.params.id,
   })
-    .then((events) => {
-      console.log("Here is the event", events.id);
-      res.json({ events: events });
+    .then((opportunities) => {
+      console.log("Here is the event", opportunities.id);
+      res.json({ opportunities: opportunities });
     })
     .catch((error) => {
       console.log("error", error);
@@ -38,18 +38,19 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  Event.create({
+  Opportunity.create({
     name: req.body.name,
     date: req.body.date,
     location: req.body.location,
-    startTime: req.body.time,
+    startTime: req.body.startTime,
     endTime: req.body.endTime,
+    description: req.body.description,
     users: req.body.users,
     organizationId: req.body.organizationId,
   })
-    .then((events) => {
-      console.log("New event =>>", events);
-      res.json({ events: events });
+    .then((opportunities) => {
+      console.log("New event =>>", opportunities);
+      res.json({ opportunities: opportunities });
     })
     .catch((error) => {
       console.log("error", error);
@@ -59,24 +60,15 @@ router.post("/", (req, res) => {
 
 router.put("/:id", async(req, res) => {
     try {
-        const data = await Event.findById(req.params.id);
+        const data = await Opportunity.findById(req.params.id);
         res.json({ data: data });
     } catch (error) {
     console.log(error);
-    }
-//   Event.findById(req.params.id)
-//     .then((error, foundEvent) => {
-//       console.log("Event found", foundEvent);
-//       res.json({ foundEvent: foundEvent });
-//     })
-//     .catch((error) => {
-//       console.log("error", error);
-//       res.json({ message: "Error ocurred, please try again" });
-//     });
+}
 });
 
 router.delete("/:id", (req, res) => {
-  Event.findOneAndRemove({ id: req.params.id })
+  Opportunity.findOneAndRemove({ id: req.params.id })
     .then((response) => {
       console.log("This was deleted", response);
       res.json({ message: `${req.params.id} was deleted` });
