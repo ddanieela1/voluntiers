@@ -3,17 +3,21 @@ const { Schema } = mongoose;
 
 const hourSchema = new Schema({
     signIn: {
-        type: Date,
+        type: String,
         required: true,
     },
     signOut: {
-        type: Date,
-        required: true,
-    },
-    userId: {
         type: String,
         required: true,
-    }
+    },
+    // eventId: {
+    //     type: mongoose.Schema.Types.ObjectId, ref: 'Event',
+    //     required: true
+    // },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'User',
+        required: true
+    },
     
 })
 

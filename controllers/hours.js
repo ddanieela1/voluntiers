@@ -10,7 +10,7 @@ const { JWT_SECRET } = process.env;
 // DB Models
 const Hour = require('../models/hours');
 
-router.get('/', (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }),(req, res) => {
     Hour.find({})
     .then(hours => {
         console.log('All hours', hours);
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', passport.authenticate('jwt', { session: false }),(req, res) => {
     console.log('find hours by', req.params.id)
     Hour.findOne({
         id: req.params.id
@@ -37,10 +37,12 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/:userId', passport.authenticate('jwt', { session: false }),(req, res) => {
     Hour.create({
         signIn: req.body.signIn,
         signOut: req.body.signOut,
+        // eventId: mongoose.Types.ObjectId(req.params.eventId),
+        userId: req.user._id,
     })
     .then(hours=> {
         console.log('New sign in =>>', hours);
@@ -52,7 +54,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put("/:id", async(req, res) => {
+router.put("/:id",passport.authenticate('jwt', { session: false }), async(req, res) => {
     try {
         const data = await Hour.findById(req.params.id);
         res.json({ data: data });
@@ -62,7 +64,7 @@ router.put("/:id", async(req, res) => {
 });
 
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
     Hour.findOneAndRemove({ id: req.params.id})
     .then(response => {
         console.log('This was deleted', response);
