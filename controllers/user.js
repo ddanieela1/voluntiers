@@ -100,7 +100,7 @@ router.post('/login', async (req, res) => {
 });
 
 // private
-router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/profile', passport.authenticate('jwt', { session: true }), (req, res) => {
     console.log('====> inside /profile');
     console.log(req.body);
     console.log('====> user')
@@ -118,6 +118,11 @@ router.get('/messages', passport.authenticate('jwt', { session: false }), async 
     const messageArray = ['message 1', 'message 2', 'message 3', 'message 4', 'message 5', 'message 6', 'message 7', 'message 8', 'message 9'];
     const sameUser = await User.findById(id);
     res.json({ id, name, email, message: messageArray, sameUser });
+});
+
+router.get('/leaders', async (req, res) => {
+    const leaderboard = await User.find().sort([['hours', 'descending']]).limit(10);
+    res.json( { leaderboard }) 
 });
 
 // Exports
