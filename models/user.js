@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 
+
 const userSchema = new Schema({
     name: {
         type: String,
@@ -24,9 +25,9 @@ const userSchema = new Schema({
         default: 0
     },
     hours: {type: Number,
-            default: 0
-        },
+        default: 0
     },
+},
     { timestamps: true }
 );
 
