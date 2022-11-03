@@ -33,8 +33,10 @@ const opportunitySchema = new Schema({
         type: mongoose.Schema.Types.ObjectId, ref: 'Organization',
         required: true
     },
+},
+{ timestamps:true}
+);
 
-})
 
 const Opportunity = mongoose.model('Event', opportunitySchema);
 

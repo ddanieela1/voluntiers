@@ -10,16 +10,17 @@ const hourSchema = new Schema({
         type: String,
         required: true,
     },
-    // eventId: {
-    //     type: mongoose.Schema.Types.ObjectId, ref: 'Event',
-    //     required: true
-    // },
+    eventId: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Event',
+        required: true
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId, ref: 'User',
         required: true
     },
     
-})
+},
+)
 
 const Hour = mongoose.model('Hour', hourSchema);
 
