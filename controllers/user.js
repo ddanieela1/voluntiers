@@ -122,7 +122,7 @@ router.get('/messages', passport.authenticate('jwt', { session: false }), async 
 
 router.get('/leaders', async (req, res) => {
     const leaderboard = await User.find().sort([['hours', 'descending']]).limit(10);
-    res.json( { leaderboard }) 
+    res.json(leaderboard) 
 });
 
 // Exports
