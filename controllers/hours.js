@@ -9,7 +9,7 @@ const { JWT_SECRET } = process.env;
 
 // DB Models
 const Hour = require('../models/hours');
-const Opportunity = require('../models/opportunity 2');
+const Opportunity = require('../models/opportunity');
 
 router.get('/', passport.authenticate('jwt', { session: false }),(req, res) => {
     Hour.find({})
