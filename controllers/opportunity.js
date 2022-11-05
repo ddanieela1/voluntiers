@@ -39,39 +39,39 @@ router.get("/:id", (req, res) => {
 });
 
 
-router.get("/currentOpportunities", (req, res) => {
-  console.log("find opportunities by", req.params.date);{
-    let dateNow;
-    if(dateNow.getTime() >= date){
-      return req.params.name
-    }
-  }
-    .then((opportunities) => {
-      console.log("Here is the event", opportunities.date);
-      res.json({ opportunities: opportunities });
-    })
-    .catch((error) => {
-      console.log("error", error);
-      res.json({ message: "Error ocurred, please try again" });
-    });
-});
+// router.get("/currentOpportunities", (req, res) => {
+//   console.log("find opportunities by", req.params.date);{
+//     let dateNow;
+//     if(dateNow.getTime() >= date){
+//       return req.params.name
+//     }
+//   }
+//     .then((opportunities) => {
+//       console.log("Here is the event", opportunities.date);
+//       res.json({ opportunities: opportunities });
+//     })
+//     .catch((error) => {
+//       console.log("error", error);
+//       res.json({ message: "Error ocurred, please try again" });
+//     });
+// });
 
 
-router.get("/pastOpportunities", (req, res) => {
-  console.log("find opportunities by", req.params.date);{
-    if(date.getTime() <= date){
-      return req.params.name
-    }
-  }
-    .then((opportunities) => {
-      console.log("Here is the event", opportunities.date);
-      res.json({ opportunities: opportunities });
-    })
-    .catch((error) => {
-      console.log("error", error);
-      res.json({ message: "Error ocurred, please try again" });
-    });
-});
+// router.get("/pastOpportunities", (req, res) => {
+//   console.log("find opportunities by", req.params.date);{
+//     if(date.getTime() <= date){
+//       return req.params.name
+//     }
+//   }
+//     .then((opportunities) => {
+//       console.log("Here is the event", opportunities.date);
+//       res.json({ opportunities: opportunities });
+//     })
+//     .catch((error) => {
+//       console.log("error", error);
+//       res.json({ message: "Error ocurred, please try again" });
+//     });
+// });
 
 
 router.post("/", (req, res) => {
