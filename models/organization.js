@@ -18,8 +18,9 @@ const organizationSchema = new Schema({
         type: String,
         required: true
     },
-    },
-    { timestamps: true } 
+  
+},
+{timestamps:true}
 )
 
 const Organization = mongoose.model('Organization', organizationSchema);
