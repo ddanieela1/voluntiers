@@ -40,7 +40,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
     Organization.create({
-        name: req.body.name,
+        orgName: req.body.orgName,
         contactPerson: req.body.contactPerson,
         contactEmail: req.body.contactEmail,
         contactPhone: req.body.contactPhone,
