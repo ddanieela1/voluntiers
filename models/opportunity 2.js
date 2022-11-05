@@ -37,15 +37,9 @@ const opportunitySchema = new Schema({
         type: mongoose.Schema.Types.ObjectId, ref: 'Organization',
         required: true
     },
-    Hours: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'Hour',
-        
-    },
-},
-{ timestamps:true}
-);
 
+})
 
-const Opportunity = mongoose.model('Opportunity', opportunitySchema);
+const Opportunity = mongoose.model('Event', opportunitySchema);
 
 module.exports = Opportunity;

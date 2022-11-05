@@ -9,6 +9,7 @@ const { JWT_SECRET } = process.env;
 
 // DB Models
 const Hour = require('../models/hours');
+const Opportunity = require('../models/opportunity 2');
 
 router.get('/', passport.authenticate('jwt', { session: false }),(req, res) => {
     Hour.find({})
@@ -37,14 +38,22 @@ router.get('/:id', passport.authenticate('jwt', { session: false }),(req, res) =
     });
 });
 
-router.post('/:userId', passport.authenticate('jwt', { session: false }),(req, res) => {
+router.post('/:eventId', passport.authenticate('jwt', { session: false }),(req, res) => {
     Hour.create({
         signIn: req.body.signIn,
         signOut: req.body.signOut,
-        // eventId: mongoose.Types.ObjectId(req.params.eventId),
+        eventId: mongoose.Types.ObjectId(req.params.eventId),
         userId: req.user._id,
     })
     .then(hours=> {
+        Opportunity.findOneById(req.params.eventId)
+        .then(opportunity=>{
+            opportunity.hours.push(hours);
+            opportunity.save();
+        })
+        .catch(error=>{
+            console.log('error',error);
+        })
         console.log('New sign in =>>', hours);
         res.json({ hours: hours });
     })

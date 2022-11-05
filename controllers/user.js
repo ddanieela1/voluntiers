@@ -90,7 +90,6 @@ router.post('/login',  passport.authenticate('jwt', { session: false }), async (
                 console.log('===> legit', legit);
                 res.json({ success: true, token: `Bearer ${token}`, userData: legit });
             });
-
         } else {
             return res.status(400).json({ message: 'Email or Password is incorrect' });
         }

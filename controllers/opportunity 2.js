@@ -9,7 +9,6 @@ const { JWT_SECRET } = process.env;
 
 // DB Models
 const Opportunity = require("../models/opportunity");
-const { Router } = require("express");
 
 router.get("/", (req, res) => {
   Opportunity.find({})
@@ -38,42 +37,6 @@ router.get("/:id", (req, res) => {
     });
 });
 
-
-// router.get("/currentOpportunities", (req, res) => {
-//   console.log("find opportunities by", req.params.date);{
-//     let dateNow;
-//     if(dateNow.getTime() >= date){
-//       return req.params.name
-//     }
-//   }
-//     .then((opportunities) => {
-//       console.log("Here is the event", opportunities.date);
-//       res.json({ opportunities: opportunities });
-//     })
-//     .catch((error) => {
-//       console.log("error", error);
-//       res.json({ message: "Error ocurred, please try again" });
-//     });
-// });
-
-
-// router.get("/pastOpportunities", (req, res) => {
-//   console.log("find opportunities by", req.params.date);{
-//     if(date.getTime() <= date){
-//       return req.params.name
-//     }
-//   }
-//     .then((opportunities) => {
-//       console.log("Here is the event", opportunities.date);
-//       res.json({ opportunities: opportunities });
-//     })
-//     .catch((error) => {
-//       console.log("error", error);
-//       res.json({ message: "Error ocurred, please try again" });
-//     });
-// });
-
-
 router.post("/", (req, res) => {
   Opportunity.create({
     name: req.body.name,
@@ -83,8 +46,6 @@ router.post("/", (req, res) => {
     endTime: req.body.endTime,
     description: req.body.description,
     users: req.body.users,
-    categories: req.body.categories,
-    hours: req.body.hours,
     organizationId: req.body.organizationId,
   })
     .then((opportunities) => {
