@@ -15,7 +15,7 @@ router.get('/test', (req, res) => {
     res.json({ message: 'User endpoint OK! ✅' });
 });
 
-router.post('/signup', (req, res) => {
+router.post('/signup', passport.authenticate('jwt', { session: false }),(req, res)=> {
     // POST - adding the new user to the database
     console.log('===> Inside of /signup');
     console.log('===> /register -> req.body',req.body);
@@ -60,7 +60,7 @@ router.post('/signup', (req, res) => {
     })
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login',  passport.authenticate('jwt', { session: false }), async (req, res) => {
     // POST - finding a user and returning the user
     console.log('===> Inside of /login');
     console.log('===> /login -> req.body', req.body);
@@ -90,7 +90,6 @@ router.post('/login', async (req, res) => {
                 console.log('===> legit', legit);
                 res.json({ success: true, token: `Bearer ${token}`, userData: legit });
             });
-
         } else {
             return res.status(400).json({ message: 'Email or Password is incorrect' });
         }
@@ -122,7 +121,12 @@ router.get('/messages', passport.authenticate('jwt', { session: false }), async 
 
 router.get('/leaders', async (req, res) => {
     const leaderboard = await User.find().sort([['hours', 'descending']]).limit(10);
-    res.json(leaderboard) 
+    res.json(leaderboard);
+});
+
+router.get('/userprofile', async (req, res) => {
+    const userProfiles = await User.find(req.params.id);
+    res.json(userProfiles);
 });
 
 // Exports

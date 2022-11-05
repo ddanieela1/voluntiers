@@ -9,12 +9,9 @@ const { JWT_SECRET } = process.env;
 
 // DB Models
 const Hour = require('../models/hours');
+const Opportunity = require('../models/opportunity 2');
 
-router.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the home page' });
-});
-
-router.get('/', (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }),(req, res) => {
     Hour.find({})
     .then(hours => {
         console.log('All hours', hours);
@@ -26,7 +23,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', passport.authenticate('jwt', { session: false }),(req, res) => {
     console.log('find hours by', req.params.id)
     Hour.findOne({
         id: req.params.id
@@ -41,12 +38,22 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/:eventId', passport.authenticate('jwt', { session: false }),(req, res) => {
     Hour.create({
         signIn: req.body.signIn,
         signOut: req.body.signOut,
+        eventId: mongoose.Types.ObjectId(req.params.eventId),
+        userId: req.user._id,
     })
     .then(hours=> {
+        Opportunity.findOneById(req.params.eventId)
+        .then(opportunity=>{
+            opportunity.hours.push(hours);
+            opportunity.save();
+        })
+        .catch(error=>{
+            console.log('error',error);
+        })
         console.log('New sign in =>>', hours);
         res.json({ hours: hours });
     })
@@ -56,33 +63,17 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
-  
-    Hour.findOne({ id: req.params.id })
-    .then(foundHours=> {
-        console.log('Sign-in found', foundHours);
-        Hour.findOneAndUpdate({ id: req.params.id}, { 
-            signIn: req.body.signIn,
-            signOut: req.body.signOut,
-        }, { 
-            upsert: true 
-        })
-        .then(hours => {
-            console.log('Sign-in was updated', hours);
-            res.json({ hours: hours })
-        })
-        .catch(error => {
-            console.log('error', error) 
-            res.json({ message: "Error ocurred, please try again" })
-        })
-    })
-    .catch(error => {
-        console.log('error', error) 
-        res.json({ message: "Error ocurred, please try again" })
-    })
+router.put("/:id",passport.authenticate('jwt', { session: false }), async(req, res) => {
+    try {
+        const data = await Hour.findById(req.params.id);
+        res.json({ data: data });
+    } catch (error) {
+    console.log(error);
+}
 });
 
-router.delete('/:id', (req, res) => {
+
+router.delete('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
     Hour.findOneAndRemove({ id: req.params.id})
     .then(response => {
         console.log('This was deleted', response);

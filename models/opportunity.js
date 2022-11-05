@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const eventSchema = new Schema({
+const opportunitySchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -15,7 +15,7 @@ const eventSchema = new Schema({
     },
     startTime: {
         type: String,
-        required: true
+        
     },
     endTime: {
         type: String,
@@ -29,14 +29,23 @@ const eventSchema = new Schema({
         type: Array,
         required: true
     },
-    organizationId: {
+    categories: {
         type: String,
         required: true
     },
+    organizationId: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Organization',
+        required: true
+    },
+    Hours: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Hour',
+        
+    },
 },
-    { timestamps: true}
+{ timestamps:true}
 );
 
-const Event = mongoose.model('Event', eventSchema);
 
-module.exports = Event;
+const Opportunity = mongoose.model('Opportunity', opportunitySchema);
+
+module.exports = Opportunity;

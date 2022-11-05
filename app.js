@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 });
     
   app.use('/eventsignup', require('./controllers/event-signup'));
-  app.use('/events', require('./controllers/event'));
+  app.use('/opportunities', require('./controllers/opportunity'));
   app.use('/organizations', require('./controllers/organization'));
   app.use('/hours', require('./controllers/hours'));
 app.use('/examples', require('./controllers/example'));
