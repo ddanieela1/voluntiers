@@ -9,7 +9,7 @@ const { JWT_SECRET } = process.env;
 
 // DB Models
 const Opportunity = require("../models/opportunity");
-const { Router } = require("express");
+
 
 router.get("/", (req, res) => {
   Opportunity.find({})
@@ -84,12 +84,11 @@ router.post("/", (req, res) => {
     description: req.body.description,
     users: req.body.users,
     categories: req.body.categories,
-    hours: req.body.hours,
     organizationId: req.body.organizationId,
   })
-    .then((opportunities) => {
-      console.log("New event =>>", opportunities);
-      res.json({ opportunities: opportunities });
+    .then((opportunity) => {
+      console.log("New event =>>", opportunity);
+      res.json({ opportunity });
     })
     .catch((error) => {
       console.log("error", error);
