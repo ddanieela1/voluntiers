@@ -57,21 +57,21 @@ router.get("/:id", (req, res) => {
 // });
 
 
-// router.get("/pastOpportunities", (req, res) => {
-//   console.log("find opportunities by", req.params.date);{
-//     if(date.getTime() <= date){
-//       return req.params.name
-//     }
-//   }
-//     .then((opportunities) => {
-//       console.log("Here is the event", opportunities.date);
-//       res.json({ opportunities: opportunities });
-//     })
-//     .catch((error) => {
-//       console.log("error", error);
-//       res.json({ message: "Error ocurred, please try again" });
-//     });
-// });
+router.get("/past", (req, res) => {
+  Opportunity.find({
+    date: {
+      $lt: new Date()
+    }
+  }).pretty()
+    .then((opportunities) => {
+      console.log("Here are the past events", opportunities);
+      res.json({ opportunities: opportunities });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
+    });
+});
 
 
 router.post("/", (req, res) => {
@@ -96,13 +96,13 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", async(req, res) => {
-    try {
-        const data = await Opportunity.findById(req.params.id);
-        res.json({ data: data });
-    } catch (error) {
+router.put("/:id", async (req, res) => {
+  try {
+    const data = await Opportunity.findById(req.params.id);
+    res.json({ data: data });
+  } catch (error) {
     console.log(error);
-}
+  }
 });
 
 router.delete("/:id", (req, res) => {
