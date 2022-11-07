@@ -22,11 +22,11 @@ mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTop
 const db = mongoose.connection;
 
 db.once('open', () => {
-    console.log(`Connected to MongoDB at HOST: ${db.host} and PORT: ${db.port}`);
+  console.log(`Connected to MongoDB at HOST: ${db.host} and PORT: ${db.port}`);
 });
 
 db.on('error', (error) => {
-    console.log(`Database Error: ${error}`);
+  console.log(`Database Error: ${error}`);
 });
 
 
@@ -35,13 +35,15 @@ db.on('error', (error) => {
 app.get('/', (req, res) => {
   res.json({ name: 'MERN Auth API', greeting: 'Welcome to the our API', author: 'YOU', message: "Smile, you are being watched by the Backend Engineering Team" });
 });
-    
-  app.use('/eventsignup', require('./controllers/event-signup'));
-  app.use('/opportunities', require('./controllers/opportunity'));
-  app.use('/organizations', require('./controllers/organization'));
-  app.use('/hours', require('./controllers/hours'));
+
+app.use('/contactus', require('./controllers/contact'));
+app.use('/eventsignup', require('./controllers/event-signup'));
+app.use('/opportunities', require('./controllers/opportunity'));
+app.use('/organizations', require('./controllers/organization'));
+app.use('/hours', require('./controllers/hours'));
 app.use('/examples', require('./controllers/example'));
 app.use('/users', require('./controllers/user'));
+
 
 // Server
 const server = app.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`));

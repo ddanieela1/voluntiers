@@ -9,7 +9,7 @@ const { JWT_SECRET } = process.env;
 
 // DB Models
 const Opportunity = require("../models/opportunity");
-const { Router } = require("express");
+
 
 router.get("/", (req, res) => {
   Opportunity.find({})
@@ -38,7 +38,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.get("/CurrentOpportunities", (req, res) => {
+router.get("/currentopportunities", (req, res) => {
   Opportunity.find({
     $gte: new Date(),
   })
@@ -52,10 +52,27 @@ router.get("/CurrentOpportunities", (req, res) => {
     });
 });
 
-router.get("/PastOpportunities", (req, res) => {
+router.get("/pastopportunities", (req, res) => {
   Opportunity.find({
     $lt: new Date(),
   })
+
+
+router.get("/past", (req, res) => {
+  Opportunity.find({
+    date: {
+      $lt: new Date()
+    }
+  })
+    .then((opportunities) => {
+      console.log("Here are the past events", opportunities);
+      res.json({ opportunities: opportunities });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
+    });
+});
 
     .then((opportunities) => {
       console.log("Here is the event", opportunities.date);
@@ -77,12 +94,11 @@ router.post("/", (req, res) => {
     description: req.body.description,
     users: req.body.users,
     categories: req.body.categories,
-    hours: req.body.hours,
     organizationId: req.body.organizationId,
   })
-    .then((opportunities) => {
-      console.log("New event =>>", opportunities);
-      res.json({ opportunities: opportunities });
+    .then((opportunity) => {
+      console.log("New event =>>", opportunity);
+      res.json({ opportunity });
     })
     .catch((error) => {
       console.log("error", error);

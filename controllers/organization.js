@@ -43,8 +43,7 @@ router.post('/', (req, res) => {
         orgName: req.body.orgName,
         contactPerson: req.body.contactPerson,
         contactEmail: req.body.contactEmail,
-        contactPhone: req.body.contactPhone,
-        createdAt: req.body.createdAt
+        contactPhone: req.body.contactPhone
     })
         .then(organizations => {
             console.log('New organization =>>', organizations);
