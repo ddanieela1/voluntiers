@@ -38,23 +38,24 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.get("/currentopportunities", (req, res) => {
+  Opportunity.find({
+    $gte: new Date(),
+  })
+    .then((opportunities) => {
+      console.log("Here is the event", opportunities.date);
+      res.json({ opportunities: opportunities });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
+    });
+});
 
-// router.get("/currentOpportunities", (req, res) => {
-//   console.log("find opportunities by", req.params.date);{
-//     let dateNow;
-//     if(dateNow.getTime() >= date){
-//       return req.params.name
-//     }
-//   }
-//     .then((opportunities) => {
-//       console.log("Here is the event", opportunities.date);
-//       res.json({ opportunities: opportunities });
-//     })
-//     .catch((error) => {
-//       console.log("error", error);
-//       res.json({ message: "Error ocurred, please try again" });
-//     });
-// });
+router.get("/pastopportunities", (req, res) => {
+  Opportunity.find({
+    $lt: new Date(),
+  })
 
 
 router.get("/past", (req, res) => {
@@ -62,7 +63,7 @@ router.get("/past", (req, res) => {
     date: {
       $lt: new Date()
     }
-  }).pretty()
+  })
     .then((opportunities) => {
       console.log("Here are the past events", opportunities);
       res.json({ opportunities: opportunities });
@@ -73,6 +74,15 @@ router.get("/past", (req, res) => {
     });
 });
 
+    .then((opportunities) => {
+      console.log("Here is the event", opportunities.date);
+      res.json({ opportunities: opportunities });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
+    });
+});
 
 router.post("/", (req, res) => {
   Opportunity.create({
@@ -96,13 +106,27 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", async (req, res) => {
-  try {
-    const data = await Opportunity.findById(req.params.id);
-    res.json({ data: data });
-  } catch (error) {
-    console.log(error);
-  }
+router.put("/:id", (req, res) => {
+  Opportunity.findOneAndUpdate({
+    name: req.body.name,
+    date: req.body.date,
+    location: req.body.location,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    description: req.body.description,
+    users: req.body.users,
+    categories: req.body.categories,
+    hours: req.body.hours,
+    organizationId: req.body.organizationId,
+  })
+    .then((opportunities) => {
+      console.log("Updated opp =>>", opportunities);
+      res.json({ opportunities: opportunities });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
+    });
 });
 
 router.delete("/:id", (req, res) => {

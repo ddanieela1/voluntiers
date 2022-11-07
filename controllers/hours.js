@@ -64,13 +64,21 @@ router.post('/:eventId', passport.authenticate('jwt', { session: false }),(req, 
 });
 
 router.put("/:id",passport.authenticate('jwt', { session: false }), async(req, res) => {
-    try {
-        const data = await Hour.findById(req.params.id);
-        res.json({ data: data });
-    } catch (error) {
-    console.log(error);
+        Hour.findById(req.params.id).then((error,hours)=>{
+            Hour.findByIdAndUpdate(hours.id,{
+                ...hours,
+                signIn: req.body.signIn,
+                signOut: req.body.signOut,
+            },(error,hours)=>{
+                res.json({hours});
+            })
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    
 }
-});
+);
 
 
 router.delete('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
