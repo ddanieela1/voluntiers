@@ -5,10 +5,13 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const lo = require("lodash");
+
 const { JWT_SECRET } = process.env;
 
 // DB Models
 const Opportunity = require("../models/opportunity");
+const User = require("../models/user");
 
 
 router.get("/", (req, res) => {
@@ -20,6 +23,22 @@ router.get("/", (req, res) => {
     .catch((error) => {
       console.log("error", error);
       res.json({ message: "Error occured, please try again" });
+    });
+});
+
+router.get("/past", (req, res) => {
+  Opportunity.find({
+    date: {
+      $lt: new Date()
+    }
+  })
+    .then((opportunities) => {
+      console.log("Here are the past events", opportunities);
+      res.json({ opportunities: opportunities });
+    })
+    .catch((error) => {
+      console.log("error", error);
+      res.json({ message: "Error ocurred, please try again" });
     });
 });
 
@@ -56,24 +75,6 @@ router.get("/pastopportunities", (req, res) => {
   Opportunity.find({
     $lt: new Date(),
   })
-
-
-router.get("/past", (req, res) => {
-  Opportunity.find({
-    date: {
-      $lt: new Date()
-    }
-  })
-    .then((opportunities) => {
-      console.log("Here are the past events", opportunities);
-      res.json({ opportunities: opportunities });
-    })
-    .catch((error) => {
-      console.log("error", error);
-      res.json({ message: "Error ocurred, please try again" });
-    });
-});
-
     .then((opportunities) => {
       console.log("Here is the event", opportunities.date);
       res.json({ opportunities: opportunities });
@@ -126,8 +127,46 @@ router.put("/:id", (req, res) => {
     .catch((error) => {
       console.log("error", error);
       res.json({ message: "Error ocurred, please try again" });
-    });
+   
 });
+
+router.put("/register/:id", async (req, res) => {
+  try {
+    console.log(`Trying to get user: ${req.body}`);
+    const found_user = await User.findOne(req.body);
+    if (!found_user) { throw new Error(`No user found`); }
+    console.log(found_user);
+    console.log(`Found User with ID ${found_user._id}`);
+    console.log(`HEEEEEELLLLLLLP>>>>>>>>>, ${req.params.id}`)
+    const data = await Opportunity.findById({_id: req.params.id});
+    data.users.push(found_user._id);
+    data.save();
+    console.log(data);
+    res.json({ data });
+
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.put("/remove/:id", async (req, res) => {
+  try {
+    console.log(`Trying to get user: ${req.body}`);
+    const found_user = await User.findOne(req.body);
+    if (!found_user) { throw new Error(`No user found`); }
+    console.log(found_user);
+    console.log(`Found User with ID ${found_user._id}`);
+    console.log(`HEEEEEELLLLLLLP>>>>>>>>>, ${req.params.id}`)
+    const data = await Opportunity.updateOne({_id: req.params.id}, { $pull: { users: `${found_user.id}` } });
+    console.log(data);
+    res.json({ data });
+
+  } catch (error) {
+    console.log(error);
+  }
+   });
+
+
 
 router.delete("/:id", (req, res) => {
   Opportunity.findOneAndRemove({ id: req.params.id })
