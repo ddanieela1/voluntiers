@@ -15,7 +15,7 @@ router.get('/test', (req, res) => {
     res.json({ message: 'User endpoint OK! ✅' });
 });
 
-router.post('/signup', passport.authenticate('jwt', { session: false }),(req, res)=> {
+router.post('/signup', (req, res)=> {
     // POST - adding the new user to the database
     console.log('===> Inside of /signup');
     console.log('===> /register -> req.body',req.body);
@@ -60,7 +60,7 @@ router.post('/signup', passport.authenticate('jwt', { session: false }),(req, re
     })
 });
 
-router.post('/login',  passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.post('/login', async (req, res) => {
     // POST - finding a user and returning the user
     console.log('===> Inside of /login');
     console.log('===> /login -> req.body', req.body);

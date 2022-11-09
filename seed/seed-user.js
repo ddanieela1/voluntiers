@@ -24,12 +24,18 @@ const { randFullName, randEmail } = require('@ngneat/falso');
 async function makeUsers() {
     // create an empty array
     const array = [];
+    function randomIntFromInterval(min, max) { // min and max included 
+        return Math.floor(Math.random() * (max - min + 1) + min)
+      }
+      const rndInt = randomIntFromInterval(10, 110)
+      console.log(rndInt)
 
     // make for loop
     for (let i = 0; i < 10; i++) {
         let newUser = { name: randFullName(),
                         email: randEmail(),
-                        password: 12345678
+                        password: 12345678,
+                        hours: randomIntFromInterval(10, 110)
                       };
     
         // push it into the array
